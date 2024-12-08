@@ -1,8 +1,9 @@
 import os
 from flask import Flask, request, jsonify
 import pymysql.cursors
-import os
 from dotenv import load_dotenv
+from fuzzywuzzy import process
+from difflib import SequenceMatcher
 load_dotenv()
 
 app = Flask(__name__)
@@ -10,11 +11,11 @@ app = Flask(__name__)
 # Database configuration
 def connect_db():
     return pymysql.connect(
-        host=os.getenv('host'),  # Your Aiven MySQL host
-        user=os.getenv('user'),                                         # Your Aiven MySQL user
-        password=os.getenv('AIVEN_PASSWORD'),                     # Your Aiven MySQL password
-        database=os.getenv('database'),                                    # Your Aiven MySQL database name
-        port=15536,                                              # Port for MySQL on Aiven
+        host=os.getenv('host'),  # Aiven MySQL host
+        user=os.getenv('user'),  # Aiven MySQL user
+        password=os.getenv('AIVEN_PASSWORD'),  # Aiven MySQL password
+        database=os.getenv('database'),  # Aiven MySQL database name
+        port=15536,  # MySQL port
         cursorclass=pymysql.cursors.DictCursor
     )
 
@@ -26,53 +27,80 @@ def get_all_products():
         cursor = connection.cursor()
         cursor.execute("SELECT * FROM products")
         products = cursor.fetchall()
-        return jsonify(products)  # Return all products in JSON format
+        return jsonify(products)
     except Exception as e:
         return jsonify({'error': str(e)}), 500
     finally:
         connection.close()
 
-# Search product by name using JSON in body
 @app.route('/api/products/search', methods=['POST'])
 def search_product():
+    connection = None
     try:
         data = request.get_json()  # Get JSON from the request body
-        
-        # Check if 'product_name' is provided in the request data
-        if 'product_name' not in data:
-            return jsonify({'error': 'Product name is required'}), 400
 
-        product_name = data['product_name']  # Extract product name
-        
+        # Check if 'query' is provided in the request data
+        if 'query' not in data:
+            return jsonify({'error': 'Search query is required'}), 400
+
+        query = data['query'].strip().lower()  # Convert query to lowercase and trim spaces
         connection = connect_db()
         cursor = connection.cursor()
-        cursor.execute("SELECT * FROM products WHERE product_name LIKE %s", (f'%{product_name}%',))
-        products = cursor.fetchall()
-        
-        if products:
-            return jsonify(products)  # Return the list of products found
+
+        # Step 1: Exact match
+        cursor.execute("SELECT * FROM products WHERE LOWER(product_name) = %s", (query,))
+        exact_matches = cursor.fetchall()
+
+        if exact_matches:
+            return jsonify(exact_matches)  # Return exact matches if found
+
+        # Step 2: Fuzzy match logic
+        cursor.execute("SELECT * FROM products")
+        all_products = cursor.fetchall()
+
+        def fuzzy_match(query, product_name):
+            """Returns a similarity score between 0 and 1."""
+            return SequenceMatcher(None, query, product_name).ratio()
+
+        partial_matches = []
+        for product in all_products:
+            product_name = product['product_name'].lower()
+            similarity = fuzzy_match(query, product_name)
+
+            # Include if similarity is above 40% threshold
+            if similarity >= 0.4:
+                partial_matches.append({"product": product, "similarity": similarity})
+
+        # Step 3: Sort results by similarity score
+        partial_matches.sort(key=lambda x: x['similarity'], reverse=True)
+
+        # Prepare the final response
+        response = [match["product"] for match in partial_matches]
+
+        if response:
+            return jsonify(response)
         else:
             return jsonify({'message': 'No products found'}), 404
 
     except Exception as e:
         return jsonify({'error': str(e)}), 500
     finally:
-        connection.close()
-
+        if connection:
+            connection.close()
 # Add a new product
 @app.route('/api/products', methods=['POST'])
 def add_product():
     try:
-        data = request.get_json()  # Get JSON data from request body
-        
-        # Insert the new product into the database
+        data = request.get_json()
         connection = connect_db()
         cursor = connection.cursor()
         cursor.execute(""" 
-            INSERT INTO products (product_name, section, brand_name, vendor_name, tax, image_link, rack)
-            VALUES (%s, %s, %s, %s, %s, %s, %s)
-        """, (data['product_name'], data['section'], data['brand_name'], data['vendor_name'],
-              data['tax'], data['image_link'], data['rack']))
+            INSERT INTO products (product_name, section, brand_name, vendor_name, tax, image_link, rack, mrp, speciality)
+            VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)
+        """, (
+            data['product_name'], data['section'], data['brand_name'], data['vendor_name'],
+            data['tax'], data['image_link'], data['rack'], data['mrp'], data['speciality']
+        ))
         connection.commit()
         return jsonify({'message': 'Product added successfully'}), 201
     except Exception as e:
@@ -80,23 +108,18 @@ def add_product():
     finally:
         connection.close()
 
-# Update a product by name using JSON in body
+# Update a product by name
 @app.route('/api/products/update', methods=['PUT'])
 def update_product():
     try:
-        data = request.get_json()  # Get JSON data from request body
-
-        # Check if 'product_name' is provided in the request data
+        data = request.get_json()
         if 'product_name' not in data:
             return jsonify({'error': 'Product name is required'}), 400
         
-        product_name = data['product_name']  # Extract product name
-        
-        # Prepare the SQL SET clause based on the provided attributes
+        product_name = data['product_name']
         update_fields = []
         update_values = []
 
-        # Check which attributes are provided and prepare update fields dynamically
         if 'brand_name' in data:
             update_fields.append("brand_name = %s")
             update_values.append(data['brand_name'])
@@ -112,22 +135,22 @@ def update_product():
         if 'rack' in data:
             update_fields.append("rack = %s")
             update_values.append(data['rack'])
+        if 'mrp' in data:
+            update_fields.append("mrp = %s")
+            update_values.append(data['mrp'])
+        if 'speciality' in data:
+            update_fields.append("speciality = %s")
+            update_values.append(data['speciality'])
 
-        # If no fields to update, return an error
         if not update_fields:
             return jsonify({'error': 'No fields to update'}), 400
 
-        # Add the product name at the end of the values
         update_values.append(product_name)
-
-        # Build the SQL query
         update_query = f"""
             UPDATE products
             SET {', '.join(update_fields)}
             WHERE product_name = %s
         """
-
-        # Execute the update query
         connection = connect_db()
         cursor = connection.cursor()
         cursor.execute(update_query, tuple(update_values))
@@ -141,7 +164,6 @@ def update_product():
         return jsonify({'error': str(e)}), 500
     finally:
         connection.close()
-
 # Delete a product by name using JSON in body
 @app.route('/api/products/delete', methods=['POST'])
 def delete_product():
@@ -168,7 +190,7 @@ def delete_product():
     finally:
         connection.close()
 
-# Run the Flask app
+
 if __name__ == '__main__':
-    port = int(os.environ.get("PORT", 5000))  # Use dynamic port provided by Render
+    port = int(os.environ.get("PORT", 5000))
     app.run(host="0.0.0.0", port=port)

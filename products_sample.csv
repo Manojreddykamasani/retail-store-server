@@ -1,0 +1,11 @@
+product_name,section,brand_name,vendor_name,tax,image_link,rack,mrp,speciality
+Laptop,Electronics,Dell,Vendor A,18.0,http://example.com/laptop.jpg,A1,75000.0,Best Sellers
+Smartphone,Electronics,Samsung,Vendor B,12.0,http://example.com/smartphone.jpg,B2,35000.0,New Arrivals
+Desk Chair,Furniture,Ikea,Vendor C,5.0,http://example.com/chair.jpg,C3,4500.0,Today's Deals
+Table Lamp,Furniture,Philips,Vendor D,18.0,http://example.com/lamp.jpg,D4,1200.0,
+Running Shoes,Sportswear,Nike,Vendor E,12.0,http://example.com/shoes.jpg,E5,6000.0,Best Sellers
+T-Shirt,Apparel,Puma,Vendor F,5.0,http://example.com/tshirt.jpg,F6,1200.0,New Arrivals
+Backpack,Accessories,Wildcraft,Vendor G,18.0,http://example.com/backpack.jpg,G7,2500.0,Today's Deals
+Wrist Watch,Accessories,Fossil,Vendor H,12.0,http://example.com/watch.jpg,H8,15000.0,Best Sellers
+Cooking Pan,Kitchen,Prestige,Vendor I,5.0,http://example.com/pan.jpg,I9,800.0,
+Notebook,Stationery,Classmate,Vendor J,0.0,http://example.com/notebook.jpg,J10,50.0,New Arrivals
