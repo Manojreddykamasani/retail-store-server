@@ -4,6 +4,7 @@ import pymysql.cursors
 from dotenv import load_dotenv
 from fuzzywuzzy import process
 from difflib import SequenceMatcher
+from flask_mail import Mail, Message
 load_dotenv()
 
 app = Flask(__name__)
@@ -18,6 +19,39 @@ def connect_db():
         port=15536,  # MySQL port
         cursorclass=pymysql.cursors.DictCursor
     )
+app.config['MAIL_SERVER'] = 'smtp.gmail.com'  # Gmail SMTP server
+app.config['MAIL_PORT'] = 587  # SMTP port for Gmail (with TLS)
+app.config['MAIL_USE_TLS'] = True  # Enable TLS
+app.config['MAIL_USE_SSL'] = False  # Disable SSL (use TLS instead)
+app.config['MAIL_USERNAME'] = 'sender_mail@gmail.com'  # Your Gmail address
+app.config['MAIL_PASSWORD'] = 'app specific password'  # Use the 16-character app password here
+app.config['MAIL_DEFAULT_SENDER'] = 'sender_mail@gmail.com'  # Default sender (same as username)
+
+mail = Mail(app)
+
+@app.route('/notify_out_of_stock', methods=['POST'])
+def notify_out_of_stock():
+    # Receive item name from the API call
+    item_name = request.json.get('item_name')
+    
+    if not item_name:
+        return jsonify({'error': 'Item name is required'}), 400
+
+    recipient_email = "mail_to_be_notified@example.com"  # Fixed recipient email address
+
+    # Create the email content
+    subject = f"{item_name} is Out of Stock"
+    body = f"Dear Admin,\n\nWe regret to inform you that the item '{item_name}' is currently out of stock.\n\nPlease take necessary action."
+
+    # Create the email message
+    msg = Message(subject, recipients=[recipient_email], body=body)
+
+    try:
+        # Send the email
+        mail.send(msg)
+        return jsonify({'message': 'Email sent successfully to the fixed recipient.'}), 200
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
 
 # Get all products
 @app.route('/api/products', methods=['GET'])
