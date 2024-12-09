@@ -1,5 +1,5 @@
 import os
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify,render_template
 import pymysql.cursors
 from dotenv import load_dotenv
 from fuzzywuzzy import process
@@ -28,7 +28,10 @@ app.config['MAIL_PASSWORD'] = 'app specific password'  # Use the 16-character ap
 app.config['MAIL_DEFAULT_SENDER'] = 'sender_mail@gmail.com'  # Default sender (same as username)
 
 mail = Mail(app)
-
+@app.route('/')
+def home():
+    # Render the index.html file from the templates folder
+    return render_template('index.html')
 @app.route('/notify_out_of_stock', methods=['POST'])
 def notify_out_of_stock():
     # Receive item name from the API call
