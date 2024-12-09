@@ -83,19 +83,26 @@ def search_product():
         query = data['query'].strip().lower()  # Convert query to lowercase and trim spaces
         if not query:
             return jsonify({'error': 'Search query cannot be empty'}), 400
-        
+
         connection = connect_db()
         cursor = connection.cursor()
 
-        # Step 1: Exact match (if query is a single word)
-        if len(query.split()) == 1:  # If the query is a single word
-            cursor.execute("SELECT * FROM products WHERE LOWER(product_name) = %s", (query,))
+        # Step 1: Handle single-letter queries (exact match first)
+        if len(query) == 1:
+            cursor.execute("SELECT * FROM products WHERE LOWER(product_name) LIKE %s", ('%' + query + '%',))
             exact_matches = cursor.fetchall()
 
             if exact_matches:
                 return jsonify(exact_matches)  # Return exact matches if found
+        
+        # Step 2: Exact match for longer queries
+        cursor.execute("SELECT * FROM products WHERE LOWER(product_name) = %s", (query,))
+        exact_matches = cursor.fetchall()
 
-        # Step 2: Fuzzy match logic (always applied, even for single word queries)
+        if exact_matches:
+            return jsonify(exact_matches)  # Return exact matches if found
+
+        # Step 3: Fuzzy match logic for longer queries or when no exact match is found
         cursor.execute("SELECT * FROM products")
         all_products = cursor.fetchall()
 
@@ -112,7 +119,7 @@ def search_product():
             if similarity >= 0.4:
                 partial_matches.append({"product": product, "similarity": similarity})
 
-        # Step 3: Sort results by similarity score
+        # Step 4: Sort results by similarity score
         partial_matches.sort(key=lambda x: x['similarity'], reverse=True)
 
         # Prepare the final response
