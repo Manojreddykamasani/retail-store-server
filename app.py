@@ -6,9 +6,9 @@ from fuzzywuzzy import process
 from difflib import SequenceMatcher
 from flask_mail import Mail, Message
 load_dotenv()
-
+from flask_cors import CORS
 app = Flask(__name__)
-
+CORS(app)
 # Database configuration
 def connect_db():
     return pymysql.connect(
@@ -81,17 +81,21 @@ def search_product():
             return jsonify({'error': 'Search query is required'}), 400
 
         query = data['query'].strip().lower()  # Convert query to lowercase and trim spaces
+        if not query:
+            return jsonify({'error': 'Search query cannot be empty'}), 400
+        
         connection = connect_db()
         cursor = connection.cursor()
 
-        # Step 1: Exact match
-        cursor.execute("SELECT * FROM products WHERE LOWER(product_name) = %s", (query,))
-        exact_matches = cursor.fetchall()
+        # Step 1: Exact match (if query is a single word)
+        if len(query.split()) == 1:  # If the query is a single word
+            cursor.execute("SELECT * FROM products WHERE LOWER(product_name) = %s", (query,))
+            exact_matches = cursor.fetchall()
 
-        if exact_matches:
-            return jsonify(exact_matches)  # Return exact matches if found
+            if exact_matches:
+                return jsonify(exact_matches)  # Return exact matches if found
 
-        # Step 2: Fuzzy match logic
+        # Step 2: Fuzzy match logic (always applied, even for single word queries)
         cursor.execute("SELECT * FROM products")
         all_products = cursor.fetchall()
 
