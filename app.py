@@ -1,5 +1,5 @@
 import os
-from flask import Flask, request, jsonify,render_template
+from flask import Flask, request, jsonify, render_template
 import pymysql.cursors
 from dotenv import load_dotenv
 from fuzzywuzzy import process
@@ -7,8 +7,10 @@ from difflib import SequenceMatcher
 from flask_mail import Mail, Message
 load_dotenv()
 from flask_cors import CORS
+
 app = Flask(__name__)
 CORS(app)
+
 # Database configuration
 def connect_db():
     return pymysql.connect(
@@ -19,22 +21,24 @@ def connect_db():
         port=15536,  # MySQL port
         cursorclass=pymysql.cursors.DictCursor
     )
+
+# Mail configuration
 app.config['MAIL_SERVER'] = 'smtp.gmail.com'  # Gmail SMTP server
 app.config['MAIL_PORT'] = 587  # SMTP port for Gmail (with TLS)
 app.config['MAIL_USE_TLS'] = True  # Enable TLS
 app.config['MAIL_USE_SSL'] = False  # Disable SSL (use TLS instead)
 app.config['MAIL_USERNAME'] = 'sender_mail@gmail.com'  # Your Gmail address
-app.config['MAIL_PASSWORD'] = 'app specific password'  # Use the 16-character app password here
+app.config['MAIL_PASSWORD'] = 'app_specific_password'  # Use the 16-character app password here
 app.config['MAIL_DEFAULT_SENDER'] = 'sender_mail@gmail.com'  # Default sender (same as username)
 
 mail = Mail(app)
+
 @app.route('/')
 def home():
-    # Render the index.html file from the templates folder
     return render_template('index.html')
+
 @app.route('/notify_out_of_stock', methods=['POST'])
 def notify_out_of_stock():
-    # Receive item name from the API call
     item_name = request.json.get('item_name')
     
     if not item_name:
@@ -42,15 +46,12 @@ def notify_out_of_stock():
 
     recipient_email = "mail_to_be_notified@example.com"  # Fixed recipient email address
 
-    # Create the email content
     subject = f"{item_name} is Out of Stock"
     body = f"Dear Admin,\n\nWe regret to inform you that the item '{item_name}' is currently out of stock.\n\nPlease take necessary action."
 
-    # Create the email message
     msg = Message(subject, recipients=[recipient_email], body=body)
 
     try:
-        # Send the email
         mail.send(msg)
         return jsonify({'message': 'Email sent successfully to the fixed recipient.'}), 200
     except Exception as e:
@@ -74,40 +75,38 @@ def get_all_products():
 def search_product():
     connection = None
     try:
-        data = request.get_json()  # Get JSON from the request body
+        data = request.get_json()
 
-        # Check if 'query' is provided in the request data
         if 'query' not in data:
             return jsonify({'error': 'Search query is required'}), 400
 
-        query = data['query'].strip().lower()  # Convert query to lowercase and trim spaces
+        query = data['query'].strip().lower()
         if not query:
             return jsonify({'error': 'Search query cannot be empty'}), 400
 
         connection = connect_db()
         cursor = connection.cursor()
 
-        # Step 1: Handle single-letter queries (exact match first)
+        # Exact match for shorter queries
         if len(query) == 1:
             cursor.execute("SELECT * FROM products WHERE LOWER(product_name) LIKE %s", ('%' + query + '%',))
             exact_matches = cursor.fetchall()
 
             if exact_matches:
-                return jsonify(exact_matches)  # Return exact matches if found
+                return jsonify(exact_matches)
         
-        # Step 2: Exact match for longer queries
+        # Exact match for longer queries
         cursor.execute("SELECT * FROM products WHERE LOWER(product_name) = %s", (query,))
         exact_matches = cursor.fetchall()
 
         if exact_matches:
-            return jsonify(exact_matches)  # Return exact matches if found
+            return jsonify(exact_matches)
 
-        # Step 3: Fuzzy match logic for longer queries or when no exact match is found
+        # Fuzzy match for longer queries or when no exact match is found
         cursor.execute("SELECT * FROM products")
         all_products = cursor.fetchall()
 
         def fuzzy_match(query, product_name):
-            """Returns a similarity score between 0 and 1."""
             return SequenceMatcher(None, query, product_name).ratio()
 
         partial_matches = []
@@ -115,14 +114,10 @@ def search_product():
             product_name = product['product_name'].lower()
             similarity = fuzzy_match(query, product_name)
 
-            # Include if similarity is above 40% threshold
             if similarity >= 0.4:
                 partial_matches.append({"product": product, "similarity": similarity})
 
-        # Step 4: Sort results by similarity score
         partial_matches.sort(key=lambda x: x['similarity'], reverse=True)
-
-        # Prepare the final response
         response = [match["product"] for match in partial_matches]
 
         if response:
@@ -135,6 +130,7 @@ def search_product():
     finally:
         if connection:
             connection.close()
+
 # Add a new product
 @app.route('/api/products', methods=['POST'])
 def add_product():
@@ -143,11 +139,11 @@ def add_product():
         connection = connect_db()
         cursor = connection.cursor()
         cursor.execute(""" 
-            INSERT INTO products (product_name, section, brand_name, vendor_name, tax, image_link, rack, mrp, speciality)
+            INSERT INTO products (product_name, section, brand_name, vendor_name, tax, image_link, rack, mrp, specialty)
             VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)
         """, (
             data['product_name'], data['section'], data['brand_name'], data['vendor_name'],
-            data['tax'], data['image_link'], data['rack'], data['mrp'], data['speciality']
+            data['tax'], data['image_link'], data['rack'], data['mrp'], data['specialty']
         ))
         connection.commit()
         return jsonify({'message': 'Product added successfully'}), 201
@@ -186,9 +182,9 @@ def update_product():
         if 'mrp' in data:
             update_fields.append("mrp = %s")
             update_values.append(data['mrp'])
-        if 'speciality' in data:
-            update_fields.append("speciality = %s")
-            update_values.append(data['speciality'])
+        if 'specialty' in data:
+            update_fields.append("specialty = %s")
+            update_values.append(data['specialty'])
 
         if not update_fields:
             return jsonify({'error': 'No fields to update'}), 400
@@ -212,17 +208,17 @@ def update_product():
         return jsonify({'error': str(e)}), 500
     finally:
         connection.close()
+
 # Delete a product by name using JSON in body
 @app.route('/api/products/delete', methods=['POST'])
 def delete_product():
     try:
-        data = request.get_json()  # Get JSON data from request body
+        data = request.get_json()
         
-        # Check if 'product_name' is provided in the request data
         if 'product_name' not in data:
             return jsonify({'error': 'Product name is required'}), 400
         
-        product_name = data['product_name']  # Extract product name
+        product_name = data['product_name']
         
         connection = connect_db()
         cursor = connection.cursor()
@@ -237,14 +233,13 @@ def delete_product():
         return jsonify({'error': str(e)}), 500
     finally:
         connection.close()
+
 @app.route('/health', methods=['GET'])
 def health():
     """Health check endpoint."""
     return jsonify({'status': 'running', 'message': 'Application is healthy.'}), 200
 
-# Other routes remain unchanged...
-# Include all routes from the original script here, modified to use `os.getenv()` for sensitive data.
-
 if __name__ == '__main__':
     port = int(os.environ.get("PORT", 5000))
     app.run(host="0.0.0.0", port=port)
+
