@@ -1,0 +1,101 @@
+brand_name,id,image_link,mrp,product_name,rack,section,speciality,tax,vendor_name
+Brand23,1,https://example.com/image14.jpg,52.73,Product90,R6,Bakery,,10%,Vendor19
+Brand45,2,https://example.com/image7.jpg,39.91,Product71,R1,Fruit,Today's Special,7%,Vendor24
+Brand25,3,https://example.com/image72.jpg,26.69,Product50,R7,Vegetable,Today's Special,8%,Vendor15
+Brand31,4,https://example.com/image26.jpg,71.44,Product48,R2,Dairy,Top Deal,11%,Vendor24
+Brand26,5,https://example.com/image58.jpg,80.35,Product28,R7,Bakery,,11%,Vendor8
+Brand36,6,https://example.com/image9.jpg,93.91,Product22,R9,Vegetable,Today's Special,5%,Vendor28
+Brand37,7,https://example.com/image12.jpg,37.82,Product46,R2,Snacks,Best Seller,12%,Vendor24
+Brand28,8,https://example.com/image3.jpg,33.75,Product20,R4,Dairy,Today's Special,8%,Vendor2
+Brand25,9,https://example.com/image13.jpg,69.16,Product21,R1,Vegetable,Top Deal,6%,Vendor24
+Brand33,10,https://example.com/image41.jpg,11.26,Product37,R2,Snacks,Best Seller,8%,Vendor26
+Brand7,11,https://example.com/image5.jpg,5.22,Product11,R7,Dairy,Top Deal,8%,Vendor1
+Brand11,12,https://example.com/image94.jpg,25.67,Product75,R1,Snacks,Best Seller,14%,Vendor30
+Brand30,13,https://example.com/image62.jpg,6.58,Product8,R2,Bakery,,18%,Vendor25
+Brand29,14,https://example.com/image35.jpg,49.9,Product8,R2,Fruit,Top Deal,9%,Vendor19
+Brand8,15,https://example.com/image18.jpg,29.32,Product96,R9,Vegetable,,12%,Vendor6
+Brand37,16,https://example.com/image53.jpg,83.79,Product94,R5,Bakery,Today's Special,6%,Vendor16
+Brand48,17,https://example.com/image69.jpg,64.3,Product43,R8,Dairy,,18%,Vendor25
+Brand18,18,https://example.com/image5.jpg,32.8,Product59,R4,Vegetable,Today's Special,9%,Vendor30
+Brand12,19,https://example.com/image7.jpg,33.08,Product91,R5,Dairy,,5%,Vendor11
+Brand18,20,https://example.com/image49.jpg,90.45,Product58,R6,Bakery,Best Seller,18%,Vendor6
+Brand18,21,https://example.com/image23.jpg,28.9,Product40,R4,Snacks,Today's Special,12%,Vendor4
+Brand29,22,https://example.com/image31.jpg,53.74,Product25,R2,Dairy,Top Deal,12%,Vendor3
+Brand5,23,https://example.com/image62.jpg,68.16,Product89,R7,Snacks,Today's Special,10%,Vendor14
+Brand49,24,https://example.com/image30.jpg,39.47,Product78,R7,Bakery,,10%,Vendor9
+Brand50,25,https://example.com/image86.jpg,60.32,Product45,R7,Dairy,,16%,Vendor18
+Brand42,26,https://example.com/image79.jpg,74.63,Product33,R3,Vegetable,,5%,Vendor8
+Brand37,27,https://example.com/image58.jpg,42.22,Product24,R6,Dairy,,10%,Vendor27
+Brand46,28,https://example.com/image54.jpg,68.78,Product21,R2,Fruit,Top Deal,12%,Vendor16
+Brand40,29,https://example.com/image83.jpg,3.48,Product51,R8,Vegetable,Best Seller,13%,Vendor26
+Brand2,30,https://example.com/image91.jpg,45.82,Product15,R1,Snacks,,7%,Vendor4
+Brand22,31,https://example.com/image52.jpg,10.99,Product8,R10,Fruit,Top Deal,11%,Vendor2
+Brand9,32,https://example.com/image69.jpg,34.21,Product7,R4,Dairy,Best Seller,6%,Vendor16
+Brand47,33,https://example.com/image21.jpg,89.59,Product37,R1,Fruit,Best Seller,17%,Vendor2
+Brand3,34,https://example.com/image92.jpg,64.9,Product52,R5,Vegetable,Top Deal,13%,Vendor23
+Brand29,35,https://example.com/image68.jpg,50.18,Product72,R3,Vegetable,Top Deal,16%,Vendor9
+Brand17,36,https://example.com/image99.jpg,49.14,Product88,R8,Fruit,Today's Special,9%,Vendor27
+Brand45,37,https://example.com/image38.jpg,95.58,Product64,R10,Dairy,Today's Special,12%,Vendor27
+Brand13,38,https://example.com/image59.jpg,29.15,Product42,R10,Fruit,,9%,Vendor20
+Brand18,39,https://example.com/image81.jpg,50.96,Product98,R9,Fruit,Today's Special,14%,Vendor29
+Brand18,40,https://example.com/image7.jpg,46.08,Product6,R9,Snacks,Best Seller,18%,Vendor10
+Brand35,41,https://example.com/image3.jpg,58.41,Product44,R3,Fruit,Best Seller,5%,Vendor17
+Brand44,42,https://example.com/image32.jpg,7.25,Product3,R3,Fruit,,15%,Vendor13
+Brand45,43,https://example.com/image72.jpg,66.27,Product14,R4,Snacks,,13%,Vendor27
+Brand3,44,https://example.com/image98.jpg,60.47,Product47,R3,Dairy,Best Seller,5%,Vendor24
+Brand28,45,https://example.com/image55.jpg,22.2,Product35,R3,Bakery,Top Deal,7%,Vendor12
+Brand49,46,https://example.com/image33.jpg,19.39,Product90,R7,Vegetable,Top Deal,17%,Vendor22
+Brand10,47,https://example.com/image93.jpg,85.94,Product16,R2,Dairy,,15%,Vendor22
+Brand8,48,https://example.com/image65.jpg,74.74,Product15,R7,Snacks,,6%,Vendor20
+Brand16,49,https://example.com/image26.jpg,42.91,Product18,R3,Bakery,Today's Special,18%,Vendor15
+Brand45,50,https://example.com/image24.jpg,60.72,Product96,R5,Snacks,Best Seller,18%,Vendor14
+Brand3,51,https://example.com/image85.jpg,2.87,Product94,R3,Dairy,,10%,Vendor24
+Brand46,52,https://example.com/image97.jpg,52.2,Product51,R7,Vegetable,Today's Special,9%,Vendor23
+Brand45,53,https://example.com/image64.jpg,24.06,Product16,R8,Dairy,Top Deal,13%,Vendor26
+Brand6,54,https://example.com/image34.jpg,54.75,Product26,R5,Bakery,Top Deal,7%,Vendor15
+Brand6,55,https://example.com/image57.jpg,79.56,Product11,R9,Fruit,Today's Special,10%,Vendor12
+Brand19,56,https://example.com/image42.jpg,75.1,Product60,R5,Vegetable,Best Seller,12%,Vendor20
+Brand47,57,https://example.com/image33.jpg,25.18,Product69,R2,Dairy,,8%,Vendor29
+Brand20,58,https://example.com/image49.jpg,25.82,Product41,R4,Bakery,,14%,Vendor11
+Brand50,59,https://example.com/image24.jpg,31.45,Product30,R1,Vegetable,Best Seller,16%,Vendor6
+Brand24,60,https://example.com/image60.jpg,13.38,Product32,R1,Fruit,,6%,Vendor9
+Brand44,61,https://example.com/image64.jpg,85.17,Product56,R5,Vegetable,Best Seller,16%,Vendor5
+Brand10,62,https://example.com/image43.jpg,93.36,Product59,R9,Vegetable,,8%,Vendor22
+Brand28,63,https://example.com/image88.jpg,78.36,Product31,R8,Fruit,,11%,Vendor21
+Brand43,64,https://example.com/image28.jpg,70.06,Product73,R3,Fruit,Today's Special,14%,Vendor17
+Brand22,65,https://example.com/image72.jpg,99.55,Product2,R10,Fruit,,6%,Vendor6
+Brand3,66,https://example.com/image26.jpg,13.23,Product43,R4,Snacks,Today's Special,8%,Vendor28
+Brand22,67,https://example.com/image96.jpg,54.18,Product37,R9,Snacks,Top Deal,12%,Vendor16
+Brand20,68,https://example.com/image21.jpg,73.49,Product7,R8,Bakery,Best Seller,10%,Vendor4
+Brand37,69,https://example.com/image48.jpg,87.19,Product76,R10,Snacks,Best Seller,5%,Vendor9
+Brand20,70,https://example.com/image15.jpg,7.58,Product56,R1,Bakery,Best Seller,17%,Vendor28
+Brand24,71,https://example.com/image57.jpg,76.22,Product47,R2,Snacks,,10%,Vendor15
+Brand50,72,https://example.com/image98.jpg,12.15,Product22,R6,Snacks,Today's Special,13%,Vendor22
+Brand20,73,https://example.com/image39.jpg,76.37,Product19,R5,Bakery,Today's Special,10%,Vendor10
+Brand39,74,https://example.com/image13.jpg,43.82,Product23,R7,Vegetable,Best Seller,12%,Vendor14
+Brand30,75,https://example.com/image18.jpg,59.23,Product70,R8,Dairy,Today's Special,15%,Vendor30
+Brand44,76,https://example.com/image70.jpg,31.52,Product54,R3,Dairy,Best Seller,17%,Vendor17
+Brand20,77,https://example.com/image15.jpg,65.13,Product37,R1,Dairy,Best Seller,16%,Vendor9
+Brand23,78,https://example.com/image34.jpg,46.24,Product41,R1,Vegetable,,13%,Vendor12
+Brand46,79,https://example.com/image28.jpg,51.82,Product11,R3,Dairy,,7%,Vendor1
+Brand15,80,https://example.com/image19.jpg,7.17,Product97,R2,Vegetable,Best Seller,17%,Vendor6
+Brand1,81,https://example.com/image92.jpg,39.92,Product77,R3,Bakery,Top Deal,12%,Vendor15
+Brand38,82,https://example.com/image86.jpg,7.17,Product55,R6,Snacks,Best Seller,7%,Vendor2
+Brand37,83,https://example.com/image89.jpg,10.54,Product83,R3,Fruit,Top Deal,18%,Vendor22
+Brand47,84,https://example.com/image4.jpg,33.32,Product36,R1,Bakery,,17%,Vendor4
+Brand22,85,https://example.com/image36.jpg,9.78,Product81,R1,Vegetable,Top Deal,7%,Vendor16
+Brand39,86,https://example.com/image39.jpg,20.33,Product88,R3,Fruit,Today's Special,8%,Vendor13
+Brand37,87,https://example.com/image14.jpg,70.7,Product16,R2,Bakery,Top Deal,8%,Vendor30
+Brand9,88,https://example.com/image84.jpg,69.74,Product28,R3,Snacks,Top Deal,9%,Vendor9
+Brand17,89,https://example.com/image94.jpg,44.6,Product87,R9,Fruit,Top Deal,17%,Vendor28
+Brand34,90,https://example.com/image62.jpg,75.33,Product31,R3,Vegetable,Best Seller,6%,Vendor29
+Brand36,91,https://example.com/image46.jpg,95.45,Product91,R3,Bakery,Today's Special,15%,Vendor3
+Brand28,92,https://example.com/image70.jpg,30.58,Product67,R3,Vegetable,Today's Special,9%,Vendor21
+Brand8,93,https://example.com/image49.jpg,62.46,Product63,R9,Vegetable,Best Seller,7%,Vendor13
+Brand2,94,https://example.com/image18.jpg,33.66,Product47,R3,Fruit,Top Deal,5%,Vendor10
+Brand3,95,https://example.com/image98.jpg,6.55,Product79,R10,Vegetable,,16%,Vendor28
+Brand24,96,https://example.com/image11.jpg,34.65,Product82,R2,Fruit,,6%,Vendor14
+Brand17,97,https://example.com/image85.jpg,53.75,Product65,R7,Bakery,,18%,Vendor29
+Brand43,98,https://example.com/image54.jpg,53.02,Product61,R2,Bakery,,13%,Vendor5
+Brand13,99,https://example.com/image94.jpg,25.16,Product79,R4,Fruit,Top Deal,12%,Vendor20
+Brand3,100,https://example.com/image26.jpg,57.27,Product21,R5,Dairy,Top Deal,12%,Vendor22
