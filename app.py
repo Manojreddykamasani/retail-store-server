@@ -240,6 +240,6 @@ def health():
     return jsonify({'status': 'running', 'message': 'Application is healthy.'}), 200
 
 if __name__ == '__main__':
-    context = ('/home/ec2-user/certs/cert.pem', '/home/ec2-user/certs/key.pem')
-    app.run(host="0.0.0.0", port=5000, ssl_context=context)
+    port = int(os.environ.get("PORT", 5000))
+    app.run(host="0.0.0.0", port=port)
 
