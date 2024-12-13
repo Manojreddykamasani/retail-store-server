@@ -60,21 +60,16 @@ def notify_out_of_stock():
 # Get all products
 @app.route('/api/products', methods=['GET'])
 def get_all_products():
-    connection = None  # Ensure the variable is initialized
     try:
         connection = connect_db()
         cursor = connection.cursor()
         cursor.execute("SELECT * FROM products")
         products = cursor.fetchall()
-        return jsonify(products), 200
+        return jsonify(products)
     except Exception as e:
-        # Log the error for debugging
-        app.logger.error(f"Error in get_all_products: {str(e)}")
-        return jsonify({'error': 'Internal Server Error', 'details': str(e)}), 500
+        return jsonify({'error': str(e)}), 500
     finally:
-        if connection:
-            connection.close()
-
+        connection.close()
 
 @app.route('/api/products/search', methods=['POST'])
 def search_product():
@@ -247,5 +242,4 @@ def health():
 
 if __name__ == '__main__':
     port = int(os.environ.get("PORT", 5000))
-    app.run(host="0.0.0.0", port=port)
-
+    app.run(host="0.0.0.0", port=port) 
