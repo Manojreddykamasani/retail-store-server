@@ -60,6 +60,7 @@ def notify_out_of_stock():
 # Get all products
 @app.route('/api/products', methods=['GET'])
 def get_all_products():
+    connection=None
     try:
         connection = connect_db()
         cursor = connection.cursor()
