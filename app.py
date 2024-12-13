@@ -134,6 +134,7 @@ def search_product():
 # Add a new product
 @app.route('/api/products', methods=['POST'])
 def add_product():
+    connection=None
     try:
         data = request.get_json()
         connection = connect_db()
